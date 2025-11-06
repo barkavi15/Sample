@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Product Catalog with MongoDB</title>
+ <!-- Internal CSS -->
+ <style>
+ body {
+ font-family: Arial, sans-serif;
+ background-color: #f9fafc;
+ margin: 0;
+ padding: 0;
+ }
+ header {
+ background-color: #4CAF50;
+ color: white;
+ text-align: center;
+ padding: 15px;
+ font-size: 24px;
+ }
+ .container {
+ width: 90%;
+ margin: 30px auto;
+ max-width: 1000px;
+ }
+ form {
+ background: white;
+ padding: 20px;
+ border-radius: 8px;
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+ margin-bottom: 30px;
+ }
+ form h2 {
+ margin-bottom: 15px;
+ color: #333;
+ }
+ input[type="text"],
+ input[type="number"] {
+ width: 23%;
+ padding: 10px;
+ margin: 5px;
+ border: 1px solid #ccc;
+ border-radius: 4px;
+ }
+ button {
+ background-color: #4CAF50;
+ color: white;
+ border: none;
+ padding: 10px 20px;
+ border-radius: 4px;
+ cursor: pointer;
+ transition: background-color 0.2s;
+ }
+ button:hover {
+ background-color: #45a049;
+ }
+ .product-grid {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 20px;
+ }
+ .card {
+ background: white;
+ border-radius: 8px;
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+ width: calc(33% - 20px);
+ overflow: hidden;
+ transition: transform 0.2s;
+ }
+ .card:hover {
+ transform: scale(1.03);
+ }
+ .card img {
+ width: 100%;
+ height: 180px;
+ object-fit: cover;
+ }
+ .card-content {
+ padding: 15px;
+ }
+ .card-content h3 {
+ margin: 0 0 10px 0;
+ color: #333;
+ }
+ .card-content p {
+ margin: 0;
+ color: #555;
+ }
+ @media (max-width: 768px) {
+ .card {
+ width: 100%;
+ }
+ input[type="text"],
+ input[type="number"] {
+ width: 100%;
+ margin-bottom: 10px;
+ }
+ }
+ </style>
+</head>
+<body>
+ <!-- Header -->
+ <header> Product Catalog with MongoDB</header>
+ <div class="container">
+ <!-- Form to Add Product -->
+ <form id="productForm">
+ <h2>Add New Product</h2>
+ <input type="text" id="name" placeholder="Product Name" required>
+ <input type="text" id="description" placeholder="Description">
+ <input type="number" id="price" placeholder="Price" required>
+ <input type="text" id="imageUrl" placeholder="Image URL">
+ <button type="submit">Add Product</button>
+ </form>
+ <!-- Product Grid -->
+ <div class="product-grid" id="productGrid"></div>
+ </div>
+ <!-- JavaScript Section -->
+ <script>
+ const form = document.getElementById("productForm");
+ const grid = document.getElementById("productGrid");
+ // Store products in memory (simulating MongoDB data)
+ const products = [];
+ // Function to display products
+ function displayProducts() {
+ grid.innerHTML = "";
+ products.forEach((p, index) => {
+ const card = document.createElement("div");
+ card.className = "card";
+ card.innerHTML = `
+ <img src="${p.imageUrl ||
+'https://via.placeholder.com/300x180?text=No+Image'}" alt="${p.name}">
+ <div class="card-content">
+ <h3>${p.name}</h3>
+ <p>${p.description}</p>
+ <p><strong>Price:</strong> $${p.price}</p>
+ </div>
+ `;
+ grid.appendChild(card);
+ });
+ }
+ // Handle form submission
+ form.addEventListener("submit", (e) => {
+ e.preventDefault();
+ const newProduct = {
+ name: document.getElementById("name").value,
+ description: document.getElementById("description").value,
+ price: document.getElementById("price").value,
+ imageUrl: document.getElementById("imageUrl").value
+ };
+ products.push(newProduct);
+ form.reset();
+ displayProducts();
+ });
+ </script>
+</body>
+</html>
